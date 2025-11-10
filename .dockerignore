@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data files (large CSV)
+GlobalWeatherRepository.csv
+global-weather-repository/
+
+# Reports
+reports/
+
+# Notebooks (don't deploy to production)
+notebooks/
+train.ipynb
+
+# Tests
+test_api.py
+start_api.py
+
+# Documentation (not needed in container)
+*.md
+!README.md
+
+# Git
+.git/
+.gitignore
+
+# Static files (frontend deployed separately)
+static/

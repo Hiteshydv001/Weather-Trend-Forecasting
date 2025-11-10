@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Weather Forecast</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <h1>🌍 Global Weather Forecast</h1>
+                <p class="subtitle">AI-Powered Temperature Prediction System</p>
+            </div>
+            <div class="status-badge" id="apiStatus">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking...</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Prediction Form Card -->
+            <div class="card">
+                <h2>🔮 Predict Global Temperature</h2>
+                <p class="card-description">Enter weather parameters to forecast the global average temperature</p>
+                
+                <form id="predictionForm">
+                    <!-- Date Input -->
+                    <div class="form-group">
+                        <label for="targetDate">
+                            <span class="label-icon">📅</span>
+                            Target Date
+                        </label>
+                        <input type="date" id="targetDate" name="targetDate" required>
+                        <small>Select a future date for prediction</small>
+                    </div>
+
+                    <!-- Weather Parameters Grid -->
+                    <div class="params-grid">
+                        <!-- Pressure -->
+                        <div class="form-group">
+                            <label for="pressure">
+                                <span class="label-icon">🌡️</span>
+                                Atmospheric Pressure (mb)
+                            </label>
+                            <input type="number" id="pressure" name="pressure" 
+                                   value="1014.0" step="0.1" min="900" max="1100" required>
+                            <small>Typical: 1013.25 mb</small>
+                        </div>
+
+                        <!-- Humidity -->
+                        <div class="form-group">
+                            <label for="humidity">
+                                <span class="label-icon">💧</span>
+                                Humidity (%)
+                            </label>
+                            <input type="number" id="humidity" name="humidity" 
+                                   value="60.0" step="0.1" min="0" max="100" required>
+                            <small>Range: 0-100%</small>
+                        </div>
+
+                        <!-- Wind Speed -->
+                        <div class="form-group">
+                            <label for="wind">
+                                <span class="label-icon">💨</span>
+                                Wind Speed (km/h)
+                            </label>
+                            <input type="number" id="wind" name="wind" 
+                                   value="10.0" step="0.1" min="0" max="200" required>
+                            <small>Average global wind</small>
+                        </div>
+
+                        <!-- Precipitation -->
+                        <div class="form-group">
+                            <label for="precipitation">
+                                <span class="label-icon">🌧️</span>
+                                Precipitation (mm)
+                            </label>
+                            <input type="number" id="precipitation" name="precipitation" 
+                                   value="0.5" step="0.1" min="0" max="500" required>
+                            <small>Expected rainfall</small>
+                        </div>
+                    </div>
+
+                    <!-- Quick Presets -->
+                    <div class="presets">
+                        <p class="presets-label">Quick Scenarios:</p>
+                        <button type="button" class="preset-btn" onclick="loadPreset('sunny')">
+                            ☀️ Sunny Day
+                        </button>
+                        <button type="button" class="preset-btn" onclick="loadPreset('storm')">
+                            ⛈️ Stormy
+                        </button>
+                        <button type="button" class="preset-btn" onclick="loadPreset('average')">
+                            🌤️ Average
+                        </button>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span class="btn-text">Get Prediction</span>
+                        <span class="btn-loader" style="display: none;">
+                            <span class="spinner"></span> Predicting...
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Card -->
+            <div class="card result-card" id="resultCard" style="display: none;">
+                <h2>📊 Prediction Results</h2>
+                
+                <div class="result-main">
+                    <div class="temperature-display">
+                        <span class="temp-value" id="tempValue">--</span>
+                        <span class="temp-unit">°C</span>
+                    </div>
+                    <p class="result-date" id="resultDate">for Tomorrow</p>
+                </div>
+
+                <div class="confidence-section">
+                    <h3>Confidence Interval</h3>
+                    <div class="confidence-bar">
+                        <div class="confidence-range">
+                            <span class="range-label">Low</span>
+                            <div class="range-bar">
+                                <div class="range-fill" id="rangeFill"></div>
+                                <div class="range-marker" id="rangeMarker"></div>
+                            </div>
+                            <span class="range-label">High</span>
+                        </div>
+                        <div class="confidence-values">
+                            <span id="confidenceLow">--</span>
+                            <span class="confidence-level">~95% Confidence</span>
+                            <span id="confidenceHigh">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-info">
+                    <p><strong>Model:</strong> <span id="modelUsed">--</span></p>
+                    <p><strong>Version:</strong> <span id="modelVersion">--</span></p>
+                </div>
+            </div>
+
+            <!-- Model Info Card -->
+            <div class="card info-card">
+                <h2>ℹ️ About This System</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">🤖</div>
+                        <div class="info-content">
+                            <h3>Ensemble AI Model</h3>
+                            <p>Combines XGBoost and RidgeCV for superior accuracy</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📈</div>
+                        <div class="info-content">
+                            <h3>High Accuracy</h3>
+                            <p>RMSE ~1.6°C, MAE ~1.2°C on test data</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">🌐</div>
+                        <div class="info-content">
+                            <h3>Global Coverage</h3>
+                            <p>Trained on worldwide weather patterns</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">⚡</div>
+                        <div class="info-content">
+                            <h3>Real-time Predictions</h3>
+                            <p>Instant forecasts using production API</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>Built with ❤️ for the PM Accelerator Program</p>
+            <div class="footer-links">
+                <a href="/docs" target="_blank">API Docs</a>
+                <a href="/health" target="_blank">System Status</a>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
