@@ -11,8 +11,8 @@
         <!-- Header -->
         <header>
             <div class="header-content">
-                <h1>🌍 Global Weather Forecast</h1>
-                <p class="subtitle">AI-Powered Temperature Prediction System</p>
+                <h1>Global Weather Forecast</h1>
+                <p class="subtitle">Temperature prediction dashboard</p>
             </div>
             <div class="status-badge" id="apiStatus">
                 <span class="status-dot"></span>
@@ -24,14 +24,13 @@
         <main>
             <!-- Prediction Form Card -->
             <div class="card">
-                <h2>🔮 Predict Global Temperature</h2>
+                <h2>Forecast Global Temperature</h2>
                 <p class="card-description">Enter weather parameters to forecast the global average temperature</p>
                 
                 <form id="predictionForm">
                     <!-- Date Input -->
                     <div class="form-group">
                         <label for="targetDate">
-                            <span class="label-icon">📅</span>
                             Target Date
                         </label>
                         <input type="date" id="targetDate" name="targetDate" required>
@@ -43,7 +42,6 @@
                         <!-- Pressure -->
                         <div class="form-group">
                             <label for="pressure">
-                                <span class="label-icon">🌡️</span>
                                 Atmospheric Pressure (mb)
                             </label>
                             <input type="number" id="pressure" name="pressure" 
@@ -54,7 +52,6 @@
                         <!-- Humidity -->
                         <div class="form-group">
                             <label for="humidity">
-                                <span class="label-icon">💧</span>
                                 Humidity (%)
                             </label>
                             <input type="number" id="humidity" name="humidity" 
@@ -65,7 +62,6 @@
                         <!-- Wind Speed -->
                         <div class="form-group">
                             <label for="wind">
-                                <span class="label-icon">💨</span>
                                 Wind Speed (km/h)
                             </label>
                             <input type="number" id="wind" name="wind" 
@@ -76,7 +72,6 @@
                         <!-- Precipitation -->
                         <div class="form-group">
                             <label for="precipitation">
-                                <span class="label-icon">🌧️</span>
                                 Precipitation (mm)
                             </label>
                             <input type="number" id="precipitation" name="precipitation" 
@@ -87,15 +82,15 @@
 
                     <!-- Quick Presets -->
                     <div class="presets">
-                        <p class="presets-label">Quick Scenarios:</p>
+                        <p class="presets-label">Quick scenarios:</p>
                         <button type="button" class="preset-btn" onclick="loadPreset('sunny')">
-                            ☀️ Sunny Day
+                            Sunny Day
                         </button>
                         <button type="button" class="preset-btn" onclick="loadPreset('storm')">
-                            ⛈️ Stormy
+                            Stormy Conditions
                         </button>
                         <button type="button" class="preset-btn" onclick="loadPreset('average')">
-                            🌤️ Average
+                            Typical Average
                         </button>
                     </div>
 
@@ -111,7 +106,7 @@
 
             <!-- Results Card -->
             <div class="card result-card" id="resultCard" style="display: none;">
-                <h2>📊 Prediction Results</h2>
+                <h2>Prediction Results</h2>
                 
                 <div class="result-main">
                     <div class="temperature-display">
@@ -148,31 +143,27 @@
 
             <!-- Model Info Card -->
             <div class="card info-card">
-                <h2>ℹ️ About This System</h2>
+                <h2>About This System</h2>
                 <div class="info-grid">
                     <div class="info-item">
-                        <div class="info-icon">🤖</div>
                         <div class="info-content">
                             <h3>Ensemble AI Model</h3>
                             <p>Combines XGBoost and RidgeCV for superior accuracy</p>
                         </div>
                     </div>
                     <div class="info-item">
-                        <div class="info-icon">📈</div>
                         <div class="info-content">
                             <h3>High Accuracy</h3>
                             <p>RMSE ~1.6°C, MAE ~1.2°C on test data</p>
                         </div>
                     </div>
                     <div class="info-item">
-                        <div class="info-icon">🌐</div>
                         <div class="info-content">
                             <h3>Global Coverage</h3>
                             <p>Trained on worldwide weather patterns</p>
                         </div>
                     </div>
                     <div class="info-item">
-                        <div class="info-icon">⚡</div>
                         <div class="info-content">
                             <h3>Real-time Predictions</h3>
                             <p>Instant forecasts using production API</p>
@@ -184,7 +175,7 @@
 
         <!-- Footer -->
         <footer>
-            <p>Built with ❤️ for the PM Accelerator Program</p>
+            <p>Built for the PM Accelerator Program</p>
             <div class="footer-links">
                 <a href="#" id="apiDocsLink" target="_blank">API Docs</a>
                 <a href="#" id="healthLink" target="_blank">System Status</a>
