@@ -55,7 +55,7 @@ function updateStatusBadge(status, text) {
 }
 
 // Load preset scenarios
-function loadPreset(type) {
+window.loadPreset = function(type) {
     const presets = {
         sunny: {
             pressure: 1020.0,
@@ -86,16 +86,27 @@ function loadPreset(type) {
         
         // Visual feedback
         const buttons = document.querySelectorAll('.preset-btn');
-        buttons.forEach(btn => btn.style.background = 'white');
-        event.target.style.background = 'var(--primary)';
-        event.target.style.color = 'white';
+        buttons.forEach(btn => {
+            btn.style.background = 'white';
+            btn.style.color = 'var(--primary)';
+        });
+        
+        // Highlight the clicked button
+        const clickedBtn = Array.from(buttons).find(btn => btn.textContent.includes(type.charAt(0).toUpperCase() + type.slice(1)) || 
+                                                           btn.onclick?.toString().includes(type));
+        if (clickedBtn) {
+            clickedBtn.style.background = 'var(--primary)';
+            clickedBtn.style.color = 'white';
+        }
         
         setTimeout(() => {
-            event.target.style.background = 'white';
-            event.target.style.color = 'var(--primary)';
+            buttons.forEach(btn => {
+                btn.style.background = 'white';
+                btn.style.color = 'var(--primary)';
+            });
         }, 1000);
     }
-}
+};
 
 // Handle form submission
 form.addEventListener('submit', async (e) => {
@@ -108,10 +119,10 @@ async function handlePrediction() {
     // Get form data
     const formData = {
         target_date: document.getElementById('targetDate').value,
-        pressure_millibars: parseFloat(document.getElementById('pressure').value),
-        humidity: parseFloat(document.getElementById('humidity').value),
-        wind_speed_kmh: parseFloat(document.getElementById('wind').value),
-        precip_mm: parseFloat(document.getElementById('precipitation').value)
+        pressure_mean: parseFloat(document.getElementById('pressure').value),
+        humidity_mean: parseFloat(document.getElementById('humidity').value),
+        wind_mean: parseFloat(document.getElementById('wind').value),
+        precip_mean: parseFloat(document.getElementById('precipitation').value)
     };
     
     // Show loading state
@@ -174,13 +185,13 @@ function displayResults(data, targetDate) {
     });
     
     // Update temperature
-    document.getElementById('tempValue').textContent = data.predicted_temperature.toFixed(2);
+    const prediction = data.predicted_global_temperature_celsius;
+    document.getElementById('tempValue').textContent = prediction.toFixed(2);
     document.getElementById('resultDate').textContent = `for ${dateStr}`;
     
     // Update confidence interval
-    const confLow = data.confidence_interval.lower;
-    const confHigh = data.confidence_interval.upper;
-    const prediction = data.predicted_temperature;
+    const confLow = data.confidence_interval.lower_bound;
+    const confHigh = data.confidence_interval.upper_bound;
     
     document.getElementById('confidenceLow').textContent = `${confLow.toFixed(2)}°C`;
     document.getElementById('confidenceHigh').textContent = `${confHigh.toFixed(2)}°C`;
@@ -194,7 +205,7 @@ function displayResults(data, targetDate) {
     
     // Update model info
     document.getElementById('modelUsed').textContent = data.model_used;
-    document.getElementById('modelVersion').textContent = data.model_metadata?.version || '1.0.0';
+    document.getElementById('modelVersion').textContent = data.model_version || '1.0';
     
     // Smooth scroll to results
     setTimeout(() => {
