@@ -5,7 +5,7 @@
 [![XGBoost](https://img.shields.io/badge/XGBoost-Ensemble-orange.svg)](https://xgboost.readthedocs.io/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-A production-ready machine learning system for analyzing global weather patterns and forecasting daily global average temperatures using ensemble learning techniques.
+Production-grade pipeline that forecasts global average temperature using ensemble machine learning and exposes predictions through a FastAPI service.
 
 ---
 
@@ -46,6 +46,93 @@ This project was developed as part of the **Product Manager Accelerator Program*
 - Technical feasibility assessment
 - API design and deployment
 - Documentation and stakeholder communication
+
+---
+
+## 📘 Advanced Assessment Summary
+
+### Project Overview
+
+This repository documents the Advanced Assessment for the Weather Trend Forecasting project. Using `GlobalWeatherRepository.csv`, the team delivered a high-accuracy time-series forecasting pipeline plus advanced climate and environmental analytics.
+
+> 🚀 **PM Accelerator Mission:** Driving efficient, scalable, and accurate data solutions for global weather trend forecasting.
+
+### I. Assessment Requirements
+
+| Requirement | Status | Methodology |
+|-------------|--------|-------------|
+| Data Cleaning & Preprocessing | ✅ Completed | KNN imputation, outlier capping, time-series features (lags, rolling means) |
+| Advanced EDA (Anomaly Detection) | ✅ Completed | Isolation Forest on temperature, pressure, humidity, and wind |
+| Forecasting with Multiple Models | ✅ Completed | Benchmarked XGBoost and SARIMAX |
+| Ensemble Modeling | ✅ Completed | Stacking Regressor (XGBoost + Ridge Regression) |
+| Feature Importance | ✅ Completed | XGBoost gain scores |
+| Environmental Impact | ✅ Completed | Pearson correlation for PM2.5, NO2, CO vs. meteorological factors |
+| Climate Analysis | ✅ Completed | Temperature variability (standard deviation) by region |
+| Spatial Analysis | ✅ Completed | Folium mapping of air quality metrics |
+
+### II. Methodology
+
+1. **Data ingestion and cleansing**
+  - Renamed and standardized raw columns, normalized timestamps.
+  - Filled missing values with KNN Imputer (`k=5`).
+  - Applied Isolation Forest (0.5% of records) to remove extreme, localized anomalies.
+
+2. **Time-series aggregation and feature engineering**
+  - Aggregated city-level measurements to a single daily global series (`temp_c_mean`).
+  - Created lagged temperatures (T-1, T-7), seven-day rolling averages, and exogenous features for pressure, humidity, and wind.
+
+3. **Ensemble forecasting**
+  - Level-0 models: XGBoost Regressor and Ridge Regression.
+  - Level-1 meta-learner: a lightweight XGBoost model to optimize the blend of base predictions.
+
+### III. Key Results and Insights
+
+**Forecast accuracy**
+
+| Model | RMSE | MAE |
+|-------|------|-----|
+| Ensemble (Stacking) | 4.044 | 3.214 |
+| XGBoost (Baseline) | 4.029 | 3.219 |
+| SARIMAX | 5.489 | 4.984 |
+
+- Ensemble modeling provided the most stable error profile, reducing volatility on out-of-sample forecasts.
+
+**Feature importance (XGBoost gain)**
+
+- `pressure_mean` emerged as the dominant predictor of next-day temperature.
+- `temp_rolling_7` outperformed short-term lags (`temp_lag1`, `temp_lag7`).
+- `month` and `dayofyear` captured critical seasonal patterns.
+
+**Climate and environmental findings**
+
+- Regional variability: Asia shows the largest temperature standard deviation (~11 C), while Africa and Oceania remain the most stable.
+- Air quality correlations: NO2 is negatively correlated with both temperature (-0.17) and wind speed (-0.16), confirming stagnation events drive poor air quality. PM2.5 correlations were weaker, aligning with localized drivers such as dust or wildfire smoke.
+
+### IV. Deployment and Usage (MLOps Readiness)
+
+- Models are serialized with Joblib and served via FastAPI.
+- Core stack: Python 3.10, Pandas, NumPy, scikit-learn, XGBoost, Statsmodels, FastAPI, Uvicorn.
+
+**Run locally**
+
+```bash
+pip install -r requirements.txt
+uvicorn src.app:app --reload
+```
+
+- API docs available at `http://127.0.0.1:8000/docs`.
+- `/predict_temperature/` accepts target date plus projected mean pressure, humidity, wind, and precipitation to return the global average temperature forecast.
+
+### V. Repository Structure (Recap)
+
+| Path | Description |
+|------|-------------|
+| `README.md` | Documentation and deployment guides |
+| `requirements.txt` | Python dependencies |
+| `notebooks/` | Source notebooks for EDA, modeling, and analysis |
+| `src/` | FastAPI application (`app.py`) |
+| `models/` | Serialized ensemble artifacts (e.g., `ensemble_forecaster.pkl`) |
+| `data/` | Supporting data (`historical_temps.csv`) |
 
 ---
 
@@ -236,8 +323,6 @@ This project was developed as part of the **Product Manager Accelerator Program*
    - Real-time API status indicator
    - Interactive confidence interval visualization
    - Responsive design for mobile and desktop
-
-See [UI_GUIDE.md](UI_GUIDE.md) for detailed UI documentation.
 
 ### Making Predictions
 
@@ -476,8 +561,6 @@ This project is ready for **free** deployment with:
 
 ### Quick Deployment
 
-See the comprehensive [DEPLOYMENT.md](DEPLOYMENT.md) guide for step-by-step instructions.
-
 **Summary:**
 
 1. **Deploy Backend to Render**:
@@ -541,7 +624,6 @@ docker run -p 8000:8000 \
 - ✅ Free tier available (no credit card required)
 - ✅ Cold start mitigation with UptimeRobot
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for complete instructions.
 
 ---
 
