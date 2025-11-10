@@ -4,5 +4,5 @@
 window.ENV = {
     // Replace this with your Render backend URL after deployment
     // Example: 'https://your-app-name.onrender.com'
-    API_URL: 'REPLACE_WITH_YOUR_RENDER_URL'
+    API_URL: 'https://weather-trend-forecasting-9wk9.onrender.com'
 };
