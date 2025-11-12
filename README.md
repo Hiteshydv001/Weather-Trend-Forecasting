@@ -645,23 +645,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 👤 Author
-
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
-
----
-
-## 🙏 Acknowledgments
-
-- **PM Accelerator Program** for project guidance
-- **Global Weather Repository** dataset contributors
-- **XGBoost**, **scikit-learn**, and **FastAPI** communities
-
----
-
 ## 📈 Future Enhancements
 
 - [ ] Real-time data ingestion from weather APIs
